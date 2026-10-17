@@ -1,3 +1,4 @@
+
 PRIORIDADES_VALIDAS = {
     "alta": "Alta",
     "media": "Média",
@@ -10,7 +11,8 @@ def exibir_menu():
     print("\n=== TASKTRACKER ===")
     print("1. Cadastrar nova tarefa")
     print("2. Visualizar tarefas cadastradas")
-    print("3. Sair da aplicação")
+    print("3. Concluir tarefa")
+    print("4. Sair da aplicação")
 
 
 def pedir_titulo():
@@ -43,12 +45,14 @@ def cadastrar_tarefa(tarefas):
         "data_limite": data_limite,
         "status": "Pendente",
     }
+
     tarefas.append(tarefa)
     print("Tarefa cadastrada com sucesso!")
 
 
 def visualizar_tarefas(tarefas):
     print("\n--- Tarefas cadastradas ---")
+
     if not tarefas:
         print("Não há tarefas cadastradas no momento.")
         return
@@ -62,8 +66,39 @@ def visualizar_tarefas(tarefas):
         print(f"  Status.......: {tarefa['status']}")
 
 
+def concluir_tarefa(tarefas):
+    print("\n--- Concluir tarefa ---")
+
+    if not tarefas:
+        print("Não há tarefas cadastradas no momento.")
+        return
+
+    visualizar_tarefas(tarefas)
+
+    try:
+        numero = int(
+            input("\nDigite o número da tarefa que deseja concluir: ")
+        )
+
+        if numero < 1 or numero > len(tarefas):
+            print("Erro: número de tarefa inválido.")
+            return
+
+        tarefa = tarefas[numero - 1]
+
+        if tarefa["status"] == "Concluída":
+            print("Esta tarefa já foi concluída.")
+        else:
+            tarefa["status"] = "Concluída"
+            print("Tarefa concluída com sucesso!")
+
+    except ValueError:
+        print("Erro: digite um número válido.")
+
+
 def main():
     tarefas = []
+
     while True:
         exibir_menu()
         opcao = input("Escolha uma opção: ").strip()
@@ -73,10 +108,12 @@ def main():
         elif opcao == "2":
             visualizar_tarefas(tarefas)
         elif opcao == "3":
+            concluir_tarefa(tarefas)
+        elif opcao == "4":
             print("Encerrando o TaskTracker. Até logo!")
             break
         else:
-            print("Opção inválida. Escolha 1, 2 ou 3.")
+            print("Opção inválida. Escolha 1, 2, 3 ou 4.")
 
 
 if __name__ == "__main__":
