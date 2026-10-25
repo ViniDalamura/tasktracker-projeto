@@ -26,29 +26,48 @@ Cada tarefa possui: título, descrição, prioridade, data limite e status.
 
 - Python 3
 - Git e GitHub
+- Docker e Docker Compose
 
 ## Estrutura do projeto
 
-```
-tasktracker-projeto/
-├── README.md
-├── .gitignore
-├── docs/
-│   └── planejamento_logico.pdf
-└── src/
-    └── main.py
-```
+    tasktracker-projeto/
+    ├── .gitignore
+    ├── .dockerignore
+    ├── docs/
+    │   └── planejamento_logico.pdf
+    ├── src/
+    │   └── main.py
+    ├── Dockerfile
+    ├── docker-compose.yml
+    └── README.md
 
-## Instalação e execução
+## Execução local (sem Docker)
 
-```bash
-git clone https://github.com/ViniDalamura/tasktracker-projeto.git
-cd tasktracker-projeto
-python src/main.py
-```
+    git clone https://github.com/ViniDalamura/tasktracker-projeto.git
+    cd tasktracker-projeto
+    python src/main.py
 
-É necessário ter o Python 3 instalado. Não há dependências externas.
+## Guia Docker
 
-## Roadmap
+Pré-requisito: Docker Desktop instalado e em execução.
 
-- Fase 3: empacotamento, Docker, testes e deploy.
+Como construir a imagem:
+
+    docker build -t tasktracker-app .
+
+Como rodar o container em modo isolado:
+
+    docker run -it --rm tasktracker-app
+
+Como rodar via orquestração (recomendado):
+
+    docker compose run --rm tasktracker-app
+
+### Decisões técnicas
+
+- `FROM python:3.11-slim`: imagem oficial do Python em versão enxuta, com tamanho reduzido.
+- `WORKDIR /app`: define a pasta de trabalho dentro do container.
+- `ENV PYTHONUNBUFFERED=1`: envia a saída do programa ao terminal imediatamente, sem buffer.
+- `COPY src/ /app/src/`: copia o código-fonte para dentro da imagem.
+- `CMD ["python", "src/main.py"]`: comando que inicia a aplicação ao subir o container.
+- `stdin_open: true` e `tty: true` no `docker-compose.yml`: mantêm a entrada do teclado aberta e alocam um terminal virtual, necessários porque o programa usa `input()`.
