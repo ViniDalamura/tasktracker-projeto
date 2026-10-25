@@ -11,7 +11,8 @@ O TaskTracker permite cadastrar tarefas e visualizá-las em um menu contínuo:
 
 1. Cadastrar nova tarefa
 2. Visualizar tarefas cadastradas
-3. Sair da aplicação
+3. Concluir tarefa
+4. Sair da aplicação
 
 Cada tarefa possui: título, descrição, prioridade, data limite e status.
 
